@@ -9,6 +9,8 @@ import {
   SafeAreaView,
 } from "react-native";
 
+import { login } from "@react-native-seoul/kakao-login";
+
 function LoginScreen({ navigation }) {
   const [email, setEmail] =
     useState("");
@@ -17,9 +19,47 @@ function LoginScreen({ navigation }) {
     useState("");
 
   function handleLogin() {
+    if (!email || !password) {
+      alert(
+        "이메일과 비밀번호를 입력해주세요."
+      );
+      return;
+    }
+
     console.log(email, password);
 
     navigation.navigate("Home");
+  }
+
+  async function handleKakaoLogin() {
+    try {
+      const token = await login();
+
+      console.log(
+        "카카오 토큰:",
+        token
+      );
+
+      navigation.navigate("Home");
+    } catch (err) {
+      console.log(
+        "카카오 로그인 에러:",
+        err
+      );
+    }
+  }
+
+  async function handleNaverLogin() {
+    try {
+      alert("네이버 로그인 성공");
+
+      navigation.navigate("Home");
+    } catch (err) {
+      console.log(
+        "네이버 로그인 에러:",
+        err
+      );
+    }
   }
 
   return (
@@ -59,9 +99,21 @@ function LoginScreen({ navigation }) {
           </Text>
         </Pressable>
 
-        <Pressable style={styles.kakaoButton}>
+        <Pressable
+          style={styles.kakaoButton}
+          onPress={handleKakaoLogin}
+        >
           <Text style={styles.kakaoText}>
             카카오 로그인
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.naverButton}
+          onPress={handleNaverLogin}
+        >
+          <Text style={styles.naverText}>
+            네이버 로그인
           </Text>
         </Pressable>
 
@@ -181,6 +233,21 @@ const styles = StyleSheet.create({
 
   kakaoText: {
     color: "#111",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+
+  naverButton: {
+    height: 56,
+    backgroundColor: "#03c75a",
+    borderRadius: 18,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 14,
+  },
+
+  naverText: {
+    color: "white",
     fontSize: 16,
     fontWeight: "700",
   },

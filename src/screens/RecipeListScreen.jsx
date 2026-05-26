@@ -19,7 +19,14 @@ function RecipeListScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("전체");
 
-  const categories = ["전체", "반찬", "국&찌개"];
+  const categories = [
+    "전체",
+    "반찬",
+    "국&찌개",
+    "일품",
+    "후식",
+    
+  ];
 
   useEffect(() => {
     async function fetchData() {
@@ -42,7 +49,6 @@ function RecipeListScreen({ navigation }) {
         );
 
   function goSearch() {
-    console.log("검색 화면 이동 클릭됨");
     navigation.navigate("Search");
   }
 
@@ -60,7 +66,12 @@ function RecipeListScreen({ navigation }) {
           <Text style={styles.searchText}>어떤 요리를 찾으시나요?</Text>
         </Pressable>
 
-        <View style={styles.tabs}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.tabs}
+          contentContainerStyle={styles.tabsContent}
+        >
           {categories.map((category) => (
             <Pressable
               key={category}
@@ -80,7 +91,7 @@ function RecipeListScreen({ navigation }) {
               </Text>
             </Pressable>
           ))}
-        </View>
+        </ScrollView>
 
         {isLoading && (
           <View style={styles.loadingBox}>
@@ -166,8 +177,11 @@ const styles = StyleSheet.create({
   },
 
   tabs: {
-    flexDirection: "row",
     marginBottom: 24,
+  },
+
+  tabsContent: {
+    paddingRight: 20,
   },
 
   tabButton: {
